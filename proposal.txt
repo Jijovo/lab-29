@@ -1,0 +1,7 @@
+My program proposal is a simulation of a football (soccer) tournament with 8 teams. The team and player names will be read from external text files,
+as well as the players' assigned "power level". There will be 4 time periods for each match (7 matches, 28 time periods) where goals are scored
+(2 for each half). A "Man of the Match" will also be picked for each match. The "teams" will be an array of 3 lists, one including the player's names,
+one including their corresponding power levels, and one including the team's total power level.
+The Man of the Match is based on the winning team and randomised favouring the players with higher power levels.
+The goals scored in each period are randomised based on the team's power level, which adds up the player's level, and randomises it to be 80% to 120%
+of the total. Each stage of the tournament will be randomised and any teams that lose are erased from the map.
