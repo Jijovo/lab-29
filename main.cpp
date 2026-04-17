@@ -35,6 +35,8 @@ int main() {
             getline(poin, powerLevel);
             tournament[teamName][1].push_back(powerLevel); //store player power levels in the second list of the array for each team
         }
+        //initialize the total power level for each team to 0 in the third list of the array for each team
+        tournament[teamName][2] = {"0"};
     }
     //close the input file streams
     tin.close();
