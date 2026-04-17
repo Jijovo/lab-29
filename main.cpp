@@ -46,6 +46,9 @@ int main() {
     //call the totalPower function to calculate the total power level for each team and update the tournament map
     totalPower(tournament);
 
+    //test match
+    match("Real Madrid", "Barcelona", tournament);
+
     /*test print the tournament map to verify that the teams, players, power levels, and total power levels have been correctly stored
     for(const auto& team : tournament) {
         cout << "Team: " << team.first << endl;
@@ -105,9 +108,12 @@ void match(const string& team1, const string& team2, map<string, array<list<stri
     int score1 = 0, score2 = 0;
     int power1 = stoi(tournament[team1][2].front());
     int power2 = stoi(tournament[team2][2].front());
+    //print the teams and their power levels for testing
+    cout << "Team 1: " << team1 << " (Power: " << power1 << ")" << endl;
+    cout << "Team 2: " << team2 << " (Power: " << power2 << ")" << endl;
     //for loop for the 4 time periods in the match
     for(int i = 0; i < 4; i++) {
-        //randomised amount of goals scored by each team based on their power levels (higher team has 50% chance to score, lower team has 25%)
+        //randomised amount of goals scored by each team based on their power levels (favouring team with higher level)
         int goals1 = 0, goals2 = 0;
         if(power1 > power2) {
             goals1 = (rand() % 2) + (rand() % 2); //0, 1, or 2 goals for team1
@@ -120,6 +126,9 @@ void match(const string& team1, const string& team2, map<string, array<list<stri
         //update the score for each team based on the goals scored in the current time period
         score1 += goals1;
         score2 += goals2;
+        //print the goals scored by each team in the current time period and the current score for testing
+        cout << "Time Period " << i + 1 << ": " << team1 << " - " << goals1 << ", " << team2 << " - " << goals2 << endl;
+        cout << "Current Score: " << team1 << " " << score1 << " - " << team2 << " " << score2 << endl;
         //end of loop
     }
     //determine the match winner based on the score
@@ -146,28 +155,16 @@ void match(const string& team1, const string& team2, map<string, array<list<stri
     } else {
         tournament.erase(team1);
     }
+    //print the map after the match to verify that the losing team has been removed
+    cout << "Remaining Teams in Tournament:" << endl;
+    for(const auto& team : tournament) {
+        cout << team.first << endl;
+    }
 //end of match function definition
 }
 
 //totalPower function definition
 void totalPower(map<string, array<list<string>, 3>>& tournament) {
-    //print the inputted teams, players, and power levels for testing
-    for(const auto& team : tournament) {
-        cout << "Team: " << team.first << endl;
-        cout << "Players: ";
-        for(const auto& player : team.second[0]) {
-            cout << player << " ";
-        }
-        cout << endl;
-        cout << "Power Levels: ";
-        for(const auto& power : team.second[1]) {
-            cout << power << " ";
-        }
-        cout << endl;
-        cout << "Total Power: " << team.second[2].front() << endl;
-        cout << "------------------------" << endl;
-    }
-
     //for loop for each team (8 iterations)
     for(auto& team : tournament) {
         //calculate the total power level for each team by summing the power levels of its players and randomising a percentage from
@@ -176,30 +173,9 @@ void totalPower(map<string, array<list<string>, 3>>& tournament) {
         for(const auto& playerPower : team.second[1]) {
             totalPower += stoi(playerPower);
         }
-        //print the team name and total power level before randomisation for testing
-        cout << "Team: " << team.first << endl;
-        cout << "Total Power before randomisation: " << totalPower << endl;
         //randomise the total power level by a percentage from 80% to 120%
         totalPower = totalPower * (0.8 + 0.4 * (static_cast<double>(rand()) / RAND_MAX));
-        //print the team name and total power level after randomisation for testing
-        cout << "Total Power after randomisation: " << totalPower << endl;
         team.second[2] = {to_string(totalPower)}; //store the total power level in the tournament map for each team
     //end of loop
-    }
-    //test print the tournament map to verify that the total power levels have been correctly calculated and stored
-    for(const auto& team : tournament) {
-        cout << "Team: " << team.first << endl;
-        cout << "Players: ";
-        for(const auto& player : team.second[0]) {
-            cout << player << " ";
-        }
-        cout << endl;
-        cout << "Power Levels: ";
-        for(const auto& power : team.second[1]) {
-            cout << power << " ";
-        }
-        cout << endl;
-        cout << "Total Power: " << team.second[2].front() << endl;
-        cout << "------------------------" << endl;
     }
 }
