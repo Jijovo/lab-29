@@ -1,6 +1,7 @@
 //Ezzat Mohamadein | ComSc 210 | Lab 30
 
 //include necessary headers and use std namespace
+#include <fstream>
 #include <iostream>
 #include <random>
 #include <map>
@@ -20,22 +21,57 @@ int main() {
 
     //initialize the tournament std::map, including 8 std::arrays of 8 teams, each with 3 std::lists for the players' names, power levels, the team's total power level
     map<string, array<list<string>, 3>> tournament;
-    //read the names and power levels from the external files and populate the tournament map
-    
+    //read the names and power levels from the external files teams.txt, players.txt and powers.txt and populate the tournament map (8 teams, 11 players and power levels each)
+    ifstream tin("teams.txt");
+    ifstream plin("players.txt");
+    ifstream poin("powers.txt");
+    string teamName, playerName, powerLevel;
+    for(int i = 0; i < 8; i++) {
+        getline(tin, teamName);
+        tournament[teamName] = array<list<string>, 3>(); //initialize the array for each team in the tournament map
+        for(int j = 0; j < 11; j++) {
+            getline(plin, playerName);
+            tournament[teamName][0].push_back(playerName); //store player names in the first list of the array for each team
+            getline(poin, powerLevel);
+            tournament[teamName][1].push_back(powerLevel); //store player power levels in the second list of the array for each team
+        }
+    }
+    //close the input file streams
+    tin.close();
+    plin.close();
+    poin.close();
+
     //call the totalPower function to calculate the total power level for each team and update the tournament map
     totalPower(tournament);
 
+    //test print the tournament map to verify that the teams, players, power levels, and total power levels have been correctly stored
+    for(const auto& team : tournament) {
+        cout << "Team: " << team.first << endl;
+        cout << "Players: ";
+        for(const auto& player : team.second[0]) {
+            cout << player << " ";
+        }
+        cout << endl;
+        cout << "Power Levels: ";
+        for(const auto& power : team.second[1]) {
+            cout << power << " ";
+        }
+        cout << endl;
+        cout << "Total Power: " << team.second[2].front() << endl;
+        cout << "------------------------" << endl;
+    }
+
     //for loop for the 3 rounds of the tournament (1 for mockup)
         //print the current round (quarterfinals, semifinals, final)
-        cout << "Round: Final" << endl;
+        
         //determine matchups by randomly pairing teams from the tournament map
         //for loop to iterate through each match in the current round
             //call the match function with the two teams as arguments
-            match("Team A", "Team B", tournament);
+            
         //end of loop
     //end of loop
     //print the tournament winner after the final round
-    cout << "Tournament Winner: " << tournament.begin()->first << endl; //the last remaining team in the tournament map is the winner
+    //the last remaining team in the tournament map is the winner
 //end of main function
     return 0;
 }
