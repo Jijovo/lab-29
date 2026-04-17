@@ -1,0 +1,6 @@
+unit testing:
+test the totalPower function by printing the parameters entered into the function, then printing the added total before and after randomisation.
+also print the final power level "list" to make sure it is written correctly in the map.
+test the match function by printing the inputted teams and total power levels,
+then print the goals scored in each of the four time periods, as well as the total score at the end of each period.
+also print the map afterwards to make sure the losing team has been removed.
