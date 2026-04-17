@@ -44,7 +44,7 @@ int main() {
     //call the totalPower function to calculate the total power level for each team and update the tournament map
     totalPower(tournament);
 
-    //test print the tournament map to verify that the teams, players, power levels, and total power levels have been correctly stored
+    /*test print the tournament map to verify that the teams, players, power levels, and total power levels have been correctly stored
     for(const auto& team : tournament) {
         cout << "Team: " << team.first << endl;
         cout << "Players: ";
@@ -60,16 +60,35 @@ int main() {
         cout << "Total Power: " << team.second[2].front() << endl;
         cout << "------------------------" << endl;
     }
+    */
 
     //for loop for the 3 rounds of the tournament (1 for mockup)
+    for(int round = 1; round <= 3; round++) {
         //print the current round (quarterfinals, semifinals, final)
+        switch (round) {
+            case 1: cout << "Quarterfinals" << endl; break;
+            case 2: cout << "Semifinals" << endl; break;
+            case 3: cout << "Final" << endl; break;
+        }
         
-        //determine matchups by randomly pairing teams from the tournament map
+        //determine matchups by randomly pairing teams from the tournament map (leave for beta)
+
         //for loop to iterate through each match in the current round
+        for (auto it = tournament.begin(); it != tournament.end(); ) {
+            string team1 = it->first; //get the first team from the iterator
+            ++it; //move the iterator to the next team
+            if (it == tournament.end()) {
+                break; //if there is an odd number of teams, break the loop
+            }
+            string team2 = it->first; //get the second team from the iterator
             //call the match function with the two teams as arguments
-            
+            match(team1, team2, tournament);
+            //reset the iterator to the beginning of the tournament map for the next matchups in the current round
+            it = tournament.begin();
         //end of loop
+        }
     //end of loop
+    }
     //print the tournament winner after the final round
     //the last remaining team in the tournament map is the winner
 //end of main function
