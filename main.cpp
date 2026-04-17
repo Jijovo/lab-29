@@ -10,6 +10,8 @@ using namespace std;
 
 //match function prototype, taking the keys for each team and the map as arguments
 void match(const string& team1, const string& team2, map<string, array<list<string>, 3>>& tournament);
+//function to calculate the total power level for each team based on the individual player power levels, and update the tournament map with the total power levels
+void totalPower(map<string, array<list<string>, 3>>& tournament);
 
 //define main function
 int main() {
@@ -18,27 +20,10 @@ int main() {
 
     //initialize the tournament std::map, including 8 std::arrays of 8 teams, each with 3 std::lists for the players' names, power levels, the team's total power level
     map<string, array<list<string>, 3>> tournament;
-    //read the names and power levels from the external files and populate the tournament map (use dummy data, 2 teams with 3 players each for mockup)
-    tournament["Team A"][0] = {"Player A1", "Player A2", "Player A3"};
-    tournament["Team A"][1] = {"80", "85", "90"}; //power levels for Team A players
-    tournament["Team A"][2] = {"0"}; //initialize total power level for Team A
-    tournament["Team B"][0] = {"Player B1", "Player B2", "Player B3"};
-    tournament["Team B"][1] = {"75", "80", "85"}; //power levels for Team B players
-    tournament["Team B"][2] = {"0"}; //initialize total power level for Team B
-
-    //for loop for each team (8 iterations)
-    for(auto& team : tournament) {
-        //calculate the total power level for each team by summing the power levels of its players and randomising a percentage from
-        //80% to 120% to add some variability to the teams' performance in the tournament
-        int totalPower = 0;
-        for(const auto& playerPower : team.second[1]) {
-            totalPower += stoi(playerPower);
-        }
-        //randomise the total power level by a percentage from 80% to 120%
-        totalPower = totalPower * (0.8 + 0.4 * (static_cast<double>(rand()) / RAND_MAX));
-        team.second[2] = {to_string(totalPower)}; //store the total power level in the tournament map for each team
-    //end of loop
-    }
+    //read the names and power levels from the external files and populate the tournament map
+    
+    //call the totalPower function to calculate the total power level for each team and update the tournament map
+    totalPower(tournament);
 
     //for loop for the 3 rounds of the tournament (1 for mockup)
         //print the current round (quarterfinals, semifinals, final)
@@ -103,4 +88,21 @@ void match(const string& team1, const string& team2, map<string, array<list<stri
         tournament.erase(team1);
     }
 //end of match function definition
+}
+
+//totalPower function definition
+void totalPower(map<string, array<list<string>, 3>>& tournament) {
+    //for loop for each team (8 iterations)
+    for(auto& team : tournament) {
+        //calculate the total power level for each team by summing the power levels of its players and randomising a percentage from
+        //80% to 120% to add some variability to the teams' performance in the tournament
+        int totalPower = 0;
+        for(const auto& playerPower : team.second[1]) {
+            totalPower += stoi(playerPower);
+        }
+        //randomise the total power level by a percentage from 80% to 120%
+        totalPower = totalPower * (0.8 + 0.4 * (static_cast<double>(rand()) / RAND_MAX));
+        team.second[2] = {to_string(totalPower)}; //store the total power level in the tournament map for each team
+    //end of loop
+    }
 }
