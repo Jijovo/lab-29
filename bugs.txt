@@ -1,0 +1,31 @@
+List of bugs:
+1. In Alpha release, I had a bug where the program would go out of bounds when the second team in a match is deleted.
+There was no proper matchmaking system at the time so I fixed it by resetting the iterator to the first element of the map before each match.
+
+2. I had an issue where the randomistaion seemed to be too similiar between teams for the power level generation.
+I believe I've fixed it by switching the srand function from being at the beginning of main to being repeated in the totalPower function loop.
+
+3. I was going to implement a "Man of the Match" feature but kept having bugs trying to randomise which player to be picked.
+I was going to fix it by having goals actually assigned to the players but it seemed kind of pointless for the simulation anyway,
+since I wanted it to be about the teams in the first place, not the players. Because of this, I decided to not implement the feature
+alltogether.
+
+4. There was a bug with reading player names at first, but it was due to me using << instead of getline()
+
+5. I had some trouhble figuring out how to loop the team inititalisation, but figured out that you can use a string variable in a loop to
+read the team names from an external file instead of making a seperate loop for all 8 teams.
+
+6.There was a bug where if teams had equal power levels the match function would not work.
+I fixed it by adding a condition in the match function where teams can have equal power levels by using an else statement.
+
+7. Has a bug with the old algorithm to calculate the total power that was in the main function.
+was fixed by rewriting it as a seperate function.
+
+8. Had a bug where all team power levels were set to 0.
+I thought something was wrong with the totalPower function, but it turns out I just never uncommented it from a previous test.
+
+9. Had an issue with the "rounds" loop printing the round name but not actually calling the matches. 
+I can't remember the reason for this but it was fixed when I rewrote the loop for the beta release anyway.
+
+10. Had an issue with the powers txt file where it didn;t match the corresponding players in players.txt,
+so I had my LLM rewrite it to match the players, and base it on real life opinions of how good a player is.

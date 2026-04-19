@@ -114,6 +114,11 @@ void match(const string& team1, const string& team2, map<string, array<list<stri
             goals1 = (rand() % 2); //0 or 1 goal for team1
             goals2 = (rand() % 2) + (rand() % 2); //0, 1, or 2 goals for team2
         }
+        else {
+            //if power levels are equal, both teams have an equal chance of scoring 0, 1, or 2 goals
+            goals1 = (rand() % 2) + (rand() % 2); //0, 1, or 2 goals for team1
+            goals2 = (rand() % 2) + (rand() % 2); //0, 1, or 2 goals for team2
+        }
 
         //update the score for each team based on the goals scored in the current time period
         score1 += goals1;
