@@ -1,4 +1,4 @@
-//Ezzat Mohamadein | ComSc 210 | Lab 30
+//Ezzat Mohamadein | ComSc 210 | Lab 31
 
 //include necessary headers and use std namespace
 #include <fstream>
@@ -7,6 +7,8 @@
 #include <map>
 #include <array>
 #include <list>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 //match function prototype, taking the keys for each team and the map as arguments
@@ -46,9 +48,6 @@ int main() {
     //call the totalPower function to calculate the total power level for each team and update the tournament map
     totalPower(tournament);
 
-    //test match
-    match("Real Madrid", "Barcelona", tournament);
-
     /*test print the tournament map to verify that the teams, players, power levels, and total power levels have been correctly stored
     for(const auto& team : tournament) {
         cout << "Team: " << team.first << endl;
@@ -67,37 +66,33 @@ int main() {
     }
     */
 
-    /*
+    
     //for loop for the 3 rounds of the tournament (1 for mockup)
     for(int round = 1; round <= 3; round++) {
         //print the current round (quarterfinals, semifinals, final)
         switch (round) {
-            case 1: cout << "Quarterfinals" << endl; break;
-            case 2: cout << "Semifinals" << endl; break;
-            case 3: cout << "Final" << endl; break;
+            case 1: cout << "________________________" << endl << "Quarterfinals" << endl << "________________________" << endl; break;
+            case 2: cout << "________________________" << endl << "Semifinals" << endl << "________________________" << endl; break;
+            case 3: cout << "________________________" << endl << "Final" << endl << "________________________" << endl; break;
         }
         
-        //determine matchups by randomly pairing teams from the tournament map (leave for beta)
+        //determine matchups by randomly pairing teams from the tournament map
+        vector<string> teams;
+        for(const auto& team : tournament) {
+            teams.push_back(team.first);
+        }
+        random_shuffle(teams.begin(), teams.end()); //had to look this up, but this is the simplest way I found to do this the way I want it
 
         //for loop to iterate through each match in the current round
-        for (auto it = tournament.begin(); it != tournament.end(); ) {
-            string team1 = it->first; //get the first team from the iterator
-            ++it; //move the iterator to the next team
-            if (it == tournament.end()) {
-                break; //if there is an odd number of teams, break the loop
-            }
-            string team2 = it->first; //get the second team from the iterator
-            //call the match function with the two teams as arguments
-            match(team1, team2, tournament);
-            //reset the iterator to the beginning of the tournament map for the next matchups in the current round
-            it = tournament.begin();
-        //end of loop
+        for(size_t i = 0; i < teams.size(); i += 2) {
+            //call the match function for each pair of teams, passing the team names and the tournament map as arguments
+            match(teams[i], teams[i + 1], tournament);
+            //end of loop
         }
     //end of loop
     }
-    */
     //print the tournament winner after the final round
-    //the last remaining team in the tournament map is the winner
+    cout << "________________________" << endl << "Tournament Winner: " << tournament.begin()->first << endl << "________________________" << endl;
 //end of main function
     return 0;
 }
@@ -108,9 +103,6 @@ void match(const string& team1, const string& team2, map<string, array<list<stri
     int score1 = 0, score2 = 0;
     int power1 = stoi(tournament[team1][2].front());
     int power2 = stoi(tournament[team2][2].front());
-    //print the teams and their power levels for testing
-    cout << "Team 1: " << team1 << " (Power: " << power1 << ")" << endl;
-    cout << "Team 2: " << team2 << " (Power: " << power2 << ")" << endl;
     //for loop for the 4 time periods in the match
     for(int i = 0; i < 4; i++) {
         //randomised amount of goals scored by each team based on their power levels (favouring team with higher level)
@@ -126,9 +118,6 @@ void match(const string& team1, const string& team2, map<string, array<list<stri
         //update the score for each team based on the goals scored in the current time period
         score1 += goals1;
         score2 += goals2;
-        //print the goals scored by each team in the current time period and the current score for testing
-        cout << "Time Period " << i + 1 << ": " << team1 << " - " << goals1 << ", " << team2 << " - " << goals2 << endl;
-        cout << "Current Score: " << team1 << " " << score1 << " - " << team2 << " " << score2 << endl;
         //end of loop
     }
     //determine the match winner based on the score
@@ -145,7 +134,7 @@ void match(const string& team1, const string& team2, map<string, array<list<stri
             winner = team2;
         }
     }
-    //print the results of the match, including the teams, score, winner, and Man of the Match
+    //print the results of the match, including the teams, score, winner
     cout << "Match: " << team1 << " vs " << team2 << endl;
     cout << "Score: " << score1 << " - " << score2 << endl;
     cout << "Winner: " << winner << endl;
@@ -154,11 +143,6 @@ void match(const string& team1, const string& team2, map<string, array<list<stri
         tournament.erase(team2);
     } else {
         tournament.erase(team1);
-    }
-    //print the map after the match to verify that the losing team has been removed
-    cout << "Remaining Teams in Tournament:" << endl;
-    for(const auto& team : tournament) {
-        cout << team.first << endl;
     }
 //end of match function definition
 }
